@@ -155,6 +155,7 @@ if (have_sconn_len)
 	message(STATUS "HAVE_SCONN_LEN")
 	add_definitions(-DHAVE_SCONN_LEN)
 endif ()
+add_definitions(-D__APPLE_USE_RFC_2292)
 
 
 #################################################
@@ -196,6 +197,7 @@ if (C_COMPILER_IS_MSVC_LIKE)
 			set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /clang:-Wno-missing-field-initializers")
 			set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /clang:-Wno-sign-compare")
 			set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /clang:-Wno-format")
+			set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /clang:-Wno-shorten-64-to-32")
 		endif()
 	endif ()
 # SETTINGS FOR UNIX COMPILER
@@ -240,6 +242,11 @@ elseif (CMAKE_C_COMPILER_ID MATCHES "Clang" OR CMAKE_C_COMPILER_ID MATCHES "Appl
 	check_c_compiler_flag(-Wno-unreachable-code has_wno_unreachable_code)
 	if (has_wno_unreachable_code)
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unreachable-code")
+	endif ()
+
+	check_c_compiler_flag(-Wno-shorten-64-to-32 has_wno_shorten_64_to_32)
+	if (has_wno_shorten_64_to_32)
+		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-shorten-64-to-32")
 	endif ()
 
 	check_c_compiler_flag(-Wstrict-prototypes has_wstrict_prototypes)
